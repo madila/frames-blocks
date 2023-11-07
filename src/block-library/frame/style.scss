@@ -1,0 +1,125 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+@keyframes tonext {
+	75% {
+		left: 0;
+	}
+	95% {
+		left: 100%;
+	}
+	98% {
+		left: 100%;
+	}
+	99% {
+		left: 0;
+	}
+}
+
+@keyframes tostart {
+	75% {
+		left: 0;
+	}
+	95% {
+		left: -300%;
+	}
+	98% {
+		left: -300%;
+	}
+	99% {
+		left: 0;
+	}
+}
+
+@keyframes snap {
+	96% {
+		scroll-snap-align: center;
+	}
+	97% {
+		scroll-snap-align: none;
+	}
+	99% {
+		scroll-snap-align: none;
+	}
+	100% {
+		scroll-snap-align: center;
+	}
+}
+
+.wp-block-frames-container {
+	position: relative;
+	padding-bottom: var(--wp--preset--spacing--30);
+}
+
+.wp-block-frames-slider {
+	position: relative;
+	overflow-x: scroll;
+	height: 100%;
+}
+
+.wp-block-frames-slider > .wp-block-frames-frame {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	position: relative;
+	scroll-snap-align: center;
+}
+
+.wp-block-frames-slider .wp-block-frames-frame.wp-block-frames-frame:has(*:nth-child(2))  {
+	overflow-x: scroll;
+	scroll-margin-top: 10rem;
+	counter-reset: item;
+	gap: var(--wp--preset--spacing--30);
+	scroll-behavior: smooth;
+	scroll-snap-type: x mandatory;
+}
+
+.wp-block-cover:has(.wp-block-frames-frame) {
+	scroll-snap-align: center;
+	scroll-margin-top: 10rem;
+}
+
+.wp-block-frames-slider > .wp-block-frames-frame:has(*:nth-child(2)) > * {
+	max-width: 100%;
+	min-width: var(--inner-group-max-width, 100%);
+	margin: 0;
+	position: relative;
+	counter-increment: item;
+	scroll-snap-align: center;
+	scroll-margin-top: 5rem;
+}
+
+.wp-block-frames-frame > .wp-block-image {
+	min-width: 100%;
+}
+
+.wp-block-frames-navigation {
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	justify-content: center;
+	gap: var(--wp--preset--spacing--40);
+}
+
+
+.wp-block-frames-navigation-dot {
+	display: block;
+	width: 1rem;
+	height: 1rem;
+	background-color: var(--wp--preset--color--primary);
+	border-radius: 50%;
+	overflow: hidden;
+	text-indent: -30px;
+	opacity: 0.5;
+}
+
+.wp-block-frames-navigation-dot.active {
+	opacity: 1;
+}

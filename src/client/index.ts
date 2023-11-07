@@ -21,7 +21,7 @@ class index {
                 (documentElement.clientTop || 0);
         }
 
-        if (scrolled > 1) {
+        if (scrolled > 100) {
             documentElement.classList.add('scrolled');
         } else {
             documentElement.classList.remove('scrolled');
@@ -82,28 +82,6 @@ class index {
                     await entry.target.requestPictureInPicture();
                 }
             }
-
-            /*
-            if (!entry.isIntersecting) {
-                console.log('leaving the screen', entry.target);
-                if(document.pictureInPictureEnabled && !entry.target.disablePictureInPicture) {
-                    try {
-                        if (document.pictureInPictureElement) {
-                            await document.exitPictureInPicture();
-                        }
-                        entry.target.onloadedmetadata = function() {
-                            // You should be able to request the picture in picture API from here
-                            // Request on my dom element
-                            console.log('metadata loaded', entry.target);
-                            entry.target.requestPictureInPicture();
-                        };
-                    } catch(err) {
-                        console.error(err);
-                    }
-                }
-            } else {
-                console.log('is entering the screen');
-            }*/
         }
     }
 
@@ -124,7 +102,7 @@ class index {
 
 	    oculus();
 
-        oculus('video', this.togglePictureInPicture);
+        oculus('.wp-block-video video', this.togglePictureInPicture);
 
         imageFade();
 
