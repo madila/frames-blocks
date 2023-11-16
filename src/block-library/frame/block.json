@@ -95,7 +95,8 @@
 			"type": "boolean",
 			"default": false,
 			"source": "attribute",
-			"attribute": "data-autoplay"
+			"attribute": "data-autoplay",
+			"selector": ".wp-block-frames-container"
 		},
 		"animation": {
 			"type": "string",

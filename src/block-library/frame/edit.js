@@ -96,7 +96,6 @@ function GroupAdvancedEditControls( { tagName, onSelectTagName } ) {
  * @return {JSX.Element}                The control group.
  */
 function InnerGroupsControl( { maxWidth, onMaxWidthChange, autoplay, onAutoPlayChange } ) {
-
 	return (
 		<InspectorControls key="setting" group="dimensions">
 			<UnitControl
@@ -147,7 +146,7 @@ export default function Edit({
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(
 		blockProps,
 		{
-			allowedBlocks: [ 'core/group', 'core/image' ]
+			allowedBlocks: [ 'core/group', 'core/image', 'core/quote' ]
 		}
 	);
 

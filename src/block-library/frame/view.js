@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
-console.log( 'Hello World! You got frames block!' );
-/* eslint-enable no-console */
-
 window.addEventListener('DOMContentLoaded', () => {
+
+    const AUTOPLAY_SPEED = 3000;
+    const TRANSITION_SPEED = 300;
 
     const triggerEvent = (index, target, scroll = true) => {
         const event = new CustomEvent("frame-change-step", {
@@ -19,11 +18,14 @@ window.addEventListener('DOMContentLoaded', () => {
          */
 
         const Navigation = frame.querySelector('.wp-block-frames-navigation');
-        const Dots = Navigation.querySelectorAll('.wp-block-frames-navigation-dot');
+        const Dots = [...Navigation.querySelectorAll('.wp-block-frames-navigation-dot')];
         const Slider = frame.querySelector('.wp-block-frames-frame');
 
-        const Groups = frame.querySelectorAll('.wp-block-frames-frame > .wp-block-group');
-        const Images = frame.querySelectorAll('.wp-block-frames-frame > .wp-block-image');
+        const Children = [...Slider.querySelectorAll('[class^="wp-block-"]')];
+
+        const AutoPlay = ('autoplay' in frame.dataset && frame.dataset.autoplay === "true");
+
+        console.log(Children, AutoPlay);
 
         let autoplayIntervalId = null;
         const stopAutoplay = () => {
@@ -31,7 +33,14 @@ window.addEventListener('DOMContentLoaded', () => {
             autoplayIntervalId = null;
         }
 
-        const Children = [...Groups, ...Images];
+        const AppendChild = Children[0].cloneNode(true);
+        const AppendDot = Dots[0].cloneNode(true);
+        AppendDot.dataset.index = String(Children.length);
+        AppendDot.textContent = String(Children.length);
+        Slider.appendChild(AppendChild);
+        Children.push(AppendChild);
+        Navigation.appendChild(AppendDot);
+        Dots.push(AppendDot);
 
         const getActiveDot = () => {
             return frame.querySelector('.wp-block-frames-navigation-dot.active');
@@ -54,12 +63,43 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const setAutoplayInterval = ()  => {
+            if (!autoplayIntervalId) {
+                autoplayIntervalId = setInterval(function () {
+
+                    Slider.classList.add('user-scrolling');
+
+                    const activeDot = getActiveDot();
+                    if (activeDot) {
+                        const activeDotIndex = 'index' in activeDot.dataset ? parseInt(activeDot.dataset.index) : 0;
+
+                        const potentialNext = activeDotIndex + 1;
+                        const goToIndex = (Children.length > potentialNext) ? potentialNext : 0;
+
+                        if(!goToIndex) {
+                            Slider.style.transitionDuration = '0s';
+                            Slider.style.transform = `translateX(0px)`;
+                        }
+
+                        setNextStep(goToIndex);
+                        document.addEventListener('scrollend', resetSlider);
+                        resetCurrentStep();
+                    }
+
+                }, AUTOPLAY_SPEED + TRANSITION_SPEED);
+            }
+        }
+
         const updateCurrent = (index) => {
             Children.forEach((panel) => panel.removeAttribute('aria-current'));
             Dots.forEach((dot) => dot.classList.remove('active'));
 
-            Dots[index].classList.add('active');
+            const currentDot = Dots[index];
+
+            currentDot.classList.add('active');
             Children[index].setAttribute('aria-current', 'step');
+
+            animateToNextSlide(index, false);
         }
 
         const snapHandler = (e) => {
@@ -67,15 +107,16 @@ window.addEventListener('DOMContentLoaded', () => {
             stopAutoplay();
 
             const atSnappingPoint = e.target.scrollLeft % e.target.offsetWidth === 0;
-            const timeOut         = atSnappingPoint ? 0 : 150; //see notes
+            const timeOut         = atSnappingPoint ? 0 : TRANSITION_SPEED; //see notes
 
-            clearTimeout(e.target.scrollTimeout); //clear previous timeout
+            clearTimeout(e.target.scrollTimeout);
 
             e.target.scrollTimeout = setTimeout(function() {
                 //using the timeOut to evaluate scrolling state
                 Slider.classList.remove('user-scrolling');
                 Slider.classList.remove('scrolling');
             }, timeOut);
+
         }
 
 
@@ -95,9 +136,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if(scroll) {
                 Slider.classList.add('scrolling');
-                Children[currentFrameIndex].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'});
             }
         });
+
+        const animateToNextSlide = (index, scroll, now = false) => {
+            if(scroll) {
+                Children[index].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'});
+            } else {
+
+                Slider.style.transition = (!index) ? `none` : `transform ${TRANSITION_SPEED}ms linear`;
+                Slider.style.transform = `translateX(-${Children[index].offsetLeft}px)`;
+
+                if(AutoPlay) {
+                    if (index === Children.length - 1) {
+                        stopAutoplay();
+                        setTimeout(function() {
+                            setAutoplayInterval();
+                        }, TRANSITION_SPEED);
+                    }
+                }
+            }
+        }
 
         /*
          * Ensure that user initiated scroll trigger the active change
@@ -130,7 +189,11 @@ window.addEventListener('DOMContentLoaded', () => {
             Children.forEach((panel) => panel.removeAttribute('aria-current'));
             Dots.forEach((dot) => dot.classList.remove('active'));
 
-            Dots[goToIndex].classList.add('active');
+            if(Dots.length > goToIndex) {
+                Dots[goToIndex].classList.add('active');
+            } else {
+
+            }
             Children[goToIndex].setAttribute('aria-current', 'step');
         }
 
@@ -147,6 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 stopAutoplay();
 
                 const goToIndex = 'index' in e.target.dataset ? parseInt(e.target.dataset.index) : 0;
+
                 setNextStep(goToIndex);
                 document.addEventListener('scrollend', resetSlider);
                 resetCurrentStep();
@@ -159,45 +223,25 @@ window.addEventListener('DOMContentLoaded', () => {
          */
 
         Slider.addEventListener('scroll', snapHandler);
+
         Children.forEach((panel, index) => panel.setAttribute('data-index', index.toString()));
 
         triggerEvent(0, Children[0], false);
 
-        if('autoplay' in Slider.dataset) {
-
-            const setAutoplayInterval = ()  => {
-                if (!autoplayIntervalId) {
-                    autoplayIntervalId = setInterval(function () {
-
-                        Slider.classList.add('user-scrolling');
-
-                        const activeDot = getActiveDot();
-                        if (activeDot) {
-                            const activeDotIndex = 'index' in activeDot.dataset ? parseInt(activeDot.dataset.index) : 0;
-
-                            const potentialNext = activeDotIndex + 1;
-                            const goToIndex = (Children.length > potentialNext) ? potentialNext : 0;
-
-                            setNextStep(goToIndex);
-                            document.addEventListener('scrollend', resetSlider);
-                            resetCurrentStep();
-                        }
-
-                    }, 2000);
+        const checkAutoPlay = (entries) => {
+            const entry = entries.length ? entries[0] : null;
+            if(entry) {
+                if(entry.isIntersecting) {
+                    setAutoplayInterval();
+                } else {
+                    stopAutoplay();
                 }
             }
+        }
 
-            const checkAutoPlay = (entries) => {
-                const entry = entries.length ? entries[0] : null;
-                if(entry) {
-                    if(entry.isIntersecting) {
-                        setAutoplayInterval();
-                    } else {
-                        stopAutoplay();
-                    }
-                }
-            }
 
+        if(AutoPlay) {
+            Slider.style.pointerEvents = `none`;
             const framesObserver = new IntersectionObserver(checkAutoPlay, {});
             framesObserver.observe(frame);
         }

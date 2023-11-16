@@ -25,12 +25,15 @@ export default function save( {attributes: { tagName: Tag, maxWidth: MaxWidth, n
 
 	const { children, ...innerBlocksProps } = useInnerBlocksProps.save( blockProps );
 
-	console.log(AutoPlay);
+	let data = {};
+	if(AutoPlay) {
+		data['data-autoplay'] = true;
+	}
 
 	return (
-		<Tag className="wp-block-frames-container">
+		<Tag className="wp-block-frames-container" {...data}>
 			<div className="wp-block-frames-slider">
-				<div {...innerBlocksProps} data-autoplay={AutoPlay}>
+				<div {...innerBlocksProps}>
 					{ children }
 				</div>
 			</div>

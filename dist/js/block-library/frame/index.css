@@ -1,1 +1,81 @@
-.wp-block-frames-container{padding-bottom:var(--wp--preset--spacing--30);position:relative}.wp-block-frames-slider{height:100%;overflow-x:hidden;position:relative}.wp-block-frames-slider>.wp-block-frames-frame.is-style-frames-slider{display:flex;flex-direction:row;flex-wrap:nowrap;padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);position:relative;scroll-snap-align:center}.wp-block-frames-slider .wp-block-frames-frame.is-style-frames-slider:has(.wp-block-group:nth-child(2)){counter-reset:item;gap:var(--wp--preset--spacing--60);overflow-x:scroll;scroll-behavior:smooth;scroll-margin-top:10rem;scroll-snap-type:x mandatory}.wp-block-cover:has(.wp-block-frames-frame){scroll-margin-top:10rem;scroll-snap-align:center}.wp-block-frames-slider>.is-style-frames-slider:has(.wp-block-group:nth-child(2))>.wp-block-group{counter-increment:item;margin:0;max-width:100%;min-width:var(--inner-group-max-width,100%);position:relative;scroll-margin-top:5rem;scroll-snap-align:center}.wp-block-frames-navigation{bottom:0;display:flex;gap:var(--wp--preset--spacing--40);justify-content:center;left:50%;position:absolute;transform:translateX(-50%);width:100%}.wp-block-frames-navigation-dot{background-color:#fff;border-radius:50%;display:block;height:1rem;opacity:.5;overflow:hidden;text-indent:-30px;width:1rem}.wp-block-frames-navigation-dot.active{opacity:1}
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/block-library/frame/editor.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+.wp-block-frames-container {
+  position: relative;
+  padding-bottom: var(--wp--preset--spacing--30);
+}
+
+.wp-block-frames-slider {
+  position: relative;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.wp-block-frames-slider > .wp-block-frames-frame.is-style-frames-slider {
+  display: flex;
+  flex-direction: row;
+  padding-left: var(--wp--preset--spacing--60);
+  padding-right: var(--wp--preset--spacing--60);
+  padding-bottom: var(--wp--preset--spacing--20);
+  flex-wrap: nowrap;
+  position: relative;
+  scroll-snap-align: center;
+}
+
+.wp-block-frames-slider .wp-block-frames-frame.is-style-frames-slider:has(.wp-block-group:nth-child(2)) {
+  overflow-x: scroll;
+  scroll-margin-top: 10rem;
+  counter-reset: item;
+  gap: var(--wp--preset--spacing--60);
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.wp-block-cover:has(.wp-block-frames-frame) {
+  scroll-snap-align: center;
+  scroll-margin-top: 10rem;
+}
+
+.wp-block-frames-slider > .is-style-frames-slider:has(.wp-block-group:nth-child(2)) > .wp-block-group {
+  max-width: 100%;
+  min-width: var(--inner-group-max-width, 100%);
+  margin: 0;
+  position: relative;
+  counter-increment: item;
+  scroll-snap-align: center;
+  scroll-margin-top: 5rem;
+}
+
+.wp-block-frames-navigation {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
+  gap: var(--wp--preset--spacing--40);
+}
+
+.wp-block-frames-navigation-dot {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  background-color: white;
+  border-radius: 50%;
+  overflow: hidden;
+  text-indent: -30px;
+  opacity: 0.5;
+}
+
+.wp-block-frames-navigation-dot.active {
+  opacity: 1;
+}
+
+/*# sourceMappingURL=index.css.map*/

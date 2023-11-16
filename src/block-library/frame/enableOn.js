@@ -1,5 +1,7 @@
 export const enableOn = [
-    'core/group'
+    'core/group',
+    'core/quote',
+    'core/image'
 ];
 
 export const setAnimationAttribute = ( settings, name ) => {
