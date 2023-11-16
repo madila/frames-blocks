@@ -7,7 +7,7 @@
  * Author URI:      https://rubenmadila.com
  * Text Domain:     frames-blocks
  * Domain Path:     /languages
- * Version:         0.1.1
+ * Version:         0.1.2
  * GitHub Plugin URI: https://github.com/madila/frames-blocks
  * Primary Branch:  main
  *
