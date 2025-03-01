@@ -1,0 +1,8 @@
+
+
+
+.wp-block-cover__image-background.has-parallax {
+  transform-origin: 0 50%;
+  animation: grow-progress auto linear;
+  animation-timeline: scroll();
+}

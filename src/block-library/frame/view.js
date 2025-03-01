@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const Dots = [...Navigation.querySelectorAll('.wp-block-frames-navigation-dot')];
         const Slider = frame.querySelector('.wp-block-frames-frame');
 
-        const Children = [...Slider.querySelectorAll('[class^="wp-block-"]')];
+        const Children = [...Slider.querySelectorAll(':scope > [class^="wp-block-"]')];
 
         const AutoPlay = ('autoplay' in frame.dataset && frame.dataset.autoplay === "true");
 

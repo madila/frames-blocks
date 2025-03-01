@@ -2,6 +2,7 @@ import oculus from './modules/oculus';
 import imageFade from './modules/imageFade';
 import scrollTracker from "./modules/scrollTracker";
 
+import './frames-blocks.scss';
 
 class index {
     lastScrollTop : number = 0;
@@ -10,7 +11,7 @@ class index {
     color: string[];
     header:HTMLElement = null;
 
-    bodyScrolled = (scrolled:Number|null = null) => {
+    bodyScrolled = (scrolled:number|null = null) => {
 
         let { document, scrollY } = window,
             { documentElement } = document;
